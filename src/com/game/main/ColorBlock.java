@@ -8,7 +8,7 @@ public class ColorBlock extends GameObject {
 	
 	private Handler handler;
 	
-	public static int GAP = 37;
+	public static int GAP = 35;
 	
 	public ColorBlock(int x, int y, ID id, String name, Handler handler) {
 		super(x, y, id, name);
@@ -16,9 +16,7 @@ public class ColorBlock extends GameObject {
 		this.handler = handler;
 	}
 
-	public void tick() {
-		
-	}
+	public void tick() {}
 	
 	public void render(Graphics g) {
 		if (id == ID.GreenBlock) g.setColor(Color.green);
@@ -28,26 +26,12 @@ public class ColorBlock extends GameObject {
 		
 		g.drawRect(x, y, 30, 5);
 		g.fillRect(x, y, 30, 5);
+
 	}
 	
-	public void collision() {
-		
-		for (int i=0; i < this.handler.objects.size(); i++) {
-			GameObject temp = this.handler.objects.get(i);
-			
-			if (Game.colorBlocks.containsKey(temp.id)) {
-				// check for collision between
-				if (getBounds().intersects(temp.getBounds())) {
-					// Update player score and then
-					// destroy the colored block, & remove it from display
-					HUD.SCORE += Game.colorBlocks.get(temp.id);
-					//this.handler.removeObject(temp);
-				}
-			}
-		}
-	}
-
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, 10, 3);
+		return new Rectangle(x, y, 30, 5);
 	}
+	
+	public void collision() {}
 }

@@ -13,20 +13,30 @@ public class Ball extends GameObject {
 		
 		this.handler = handler;
 		
-		velX = 3;
-		velY = 3;
+		velX = 2;
+		velY = 2;
 	}
 	
 	public void tick() {
 		x += velX;
 		y += velY;
 		
-		// bounds check to keep ball bouncing off side walls and ceiling
+		// bounds check to keep ball bouncing off side walls
 		if (x <= 0 || x >= Game.WIDTH - 15) velX *= -1;
-		if (y <= 0) velY *= -1;
 		
 		// TODO: If player misses and ball goes through the floor, reduce a player life
-		//if (y >= Game.HEIGHT) 
+		// also if player gets a breakout and ball goes through ceiling handle win condition
+		if (y <= 0) {
+			System.out.println("BREAKOUT");
+			this.setVelocityY(0);
+		}
+		
+		if (y >= Game.HEIGHT) {
+			System.out.println("LOST A LIFE");
+			this.setVelocityY(0);
+		}
+
+		collision();
 	}
 	
 	public void render(Graphics g) {
@@ -41,21 +51,21 @@ public class Ball extends GameObject {
 		return new Rectangle(x, y, 6, 6);
 	}
 	
+	/**
+	 * Detect collision between the gameball and a colored block GameObject.
+	 */
 	public void collision() {
 		for (int i=0; i < this.handler.objects.size(); i++) {
 			GameObject temp = this.handler.objects.get(i);
-
+			// check if the game object is a ColorBlock with ID.<Color>Block
 			if (Game.colorBlocks.containsKey(temp.id)) {
-				// check for collision between
+				// check for collision between ball and color block
 				if (getBounds().intersects(temp.getBounds())) {
-					// Update player score and then
-					// destroy the colored block, & remove it from display
+					this.setVelocityY(2);
 					HUD.SCORE += Game.colorBlocks.get(temp.id);
-					System.out.println("BLOCK COLLISION");
-					//this.handler.removeObject(temp);
+					this.handler.removeObject(temp);
 				}
 			}
-			
 		}
 	}
 }

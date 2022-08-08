@@ -11,7 +11,7 @@ public class Game extends Canvas implements Runnable {
 	
 	private static final long serialVersionUID = 1L;
 
-	public static final int WIDTH = 600, HEIGHT = WIDTH / 12 * 11;
+	public static final int WIDTH = 487, HEIGHT = WIDTH / 10 * 12;
 	
 	public static HashMap<ID, Integer> colorBlocks = new HashMap<>();
 	
@@ -22,6 +22,8 @@ public class Game extends Canvas implements Runnable {
 	private HUD hud;
 	private Random r;
 	
+	private int coloredBlockOrigin = 0;
+	
 	public Game() {
 		handler = new Handler();
 		hud = new HUD();
@@ -31,24 +33,26 @@ public class Game extends Canvas implements Runnable {
 		
 		new Window(WIDTH, HEIGHT, "break0ut", this);
 		
-		colorBlocks.put(ID.GreenBlock, 1);
-		colorBlocks.put(ID.YellowBlock, 3);
+		colorBlocks.put(ID.YellowBlock, 1);
+		colorBlocks.put(ID.GreenBlock, 3);
 		colorBlocks.put(ID.OrangeBlock, 5);
 		colorBlocks.put(ID.RedBlock, 7);
 		
 		handler.addObject(new Player(WIDTH/2-64, HEIGHT - 80, ID.Player, "player1", handler));
-		handler.addObject(new Ball(WIDTH/2-64, 0, ID.Ball, "gameball", handler));
+		handler.addObject(new Ball(WIDTH/2-64, 145, ID.Ball, "gameball", handler));
 		
-		// 8 rows of 14 blocks (4 colors with 2 rows each)
+		// TODO: this needs some fine tuning for more snug placement
+		// Create the colored blocks consisting of 8 rows, each with 14 blocks (4 colors with 2 rows each)
 		for (int i=0; i < 14; i++) {
-			handler.addObject(new ColorBlock(ColorBlock.GAP * i, 70, ID.RedBlock, "red-" + i, handler));
-			handler.addObject(new ColorBlock(ColorBlock.GAP * i, 80, ID.RedBlock, "red-" + i, handler));
-			handler.addObject(new ColorBlock(ColorBlock.GAP * i, 90, ID.OrangeBlock, "orange-" + i, handler));
-			handler.addObject(new ColorBlock(ColorBlock.GAP * i, 100, ID.OrangeBlock, "orange-" + i, handler));
-			handler.addObject(new ColorBlock(ColorBlock.GAP * i, 110, ID.YellowBlock, "yellow-" + i, handler));
-			handler.addObject(new ColorBlock(ColorBlock.GAP * i, 120, ID.YellowBlock, "yellow-" + i, handler));
-			handler.addObject(new ColorBlock(ColorBlock.GAP * i, 130, ID.GreenBlock, "green-" + i, handler));
-			handler.addObject(new ColorBlock(ColorBlock.GAP * i, 130, ID.GreenBlock, "green-" + i, handler));
+			coloredBlockOrigin = ColorBlock.GAP * i;
+			handler.addObject(new ColorBlock(coloredBlockOrigin, 70, ID.RedBlock, "red-" + i, handler));
+			handler.addObject(new ColorBlock(coloredBlockOrigin, 80, ID.RedBlock, "red-" + i, handler));
+			handler.addObject(new ColorBlock(coloredBlockOrigin, 90, ID.OrangeBlock, "orange-" + i, handler));
+			handler.addObject(new ColorBlock(coloredBlockOrigin, 100, ID.OrangeBlock, "orange-" + i, handler));
+			handler.addObject(new ColorBlock(coloredBlockOrigin, 110, ID.GreenBlock, "yellow-" + i, handler));
+			handler.addObject(new ColorBlock(coloredBlockOrigin, 120, ID.GreenBlock, "yellow-" + i, handler));
+			handler.addObject(new ColorBlock(coloredBlockOrigin, 130, ID.YellowBlock, "green-" + i, handler));
+			handler.addObject(new ColorBlock(coloredBlockOrigin, 140, ID.YellowBlock, "green-" + i, handler));
 		}
 		
 	}
