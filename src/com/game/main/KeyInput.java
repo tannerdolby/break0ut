@@ -13,8 +13,7 @@ public class KeyInput extends KeyAdapter {
 
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		System.out.println(key);
-		
+
 		for (int i=0; i < this.handler.objects.size(); i++) {
 			GameObject temp = this.handler.objects.get(i);
 			

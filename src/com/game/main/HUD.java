@@ -16,17 +16,17 @@ public class HUD {
 	public void render(Graphics g) {
 		
 		// top bar
-		g.setColor(Color.white);
+//		g.setColor(Color.white);
 //		g.drawRect(0, 0, Game.WIDTH, 15);
 //		g.fillRect(0, 0, Game.WIDTH, 15);
 		
 		// left bar
-//		g.setColor(Color.cyan);
+		g.setColor(Color.white);
 		g.drawRect(0, 0, 5, Game.HEIGHT);
 		g.fillRect(0, 0, 5, Game.HEIGHT);
 		
 		// right bar
-//		g.setColor(Color.cyan);
+		g.setColor(Color.white);
 		g.drawRect(Game.WIDTH-5, 0, 5, Game.HEIGHT);
 		g.fillRect(Game.WIDTH-5, 0, 5, Game.HEIGHT);
 		
