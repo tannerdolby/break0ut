@@ -8,45 +8,39 @@ public class HUD {
 	public static int SCORE = 0;
 	public static int LIVES = 1;
 	
-	// Change HUD display to reflect 'Breakout' score and lives left
 	public void tick() {
 		
 	}
 	
 	public void render(Graphics g) {
 		
-		// top bar
-//		g.setColor(Color.white);
-//		g.drawRect(0, 0, Game.WIDTH, 15);
-//		g.fillRect(0, 0, Game.WIDTH, 15);
-		
-		// left bar
+		// left edge
 		g.setColor(Color.white);
 		g.drawRect(0, 0, 5, Game.HEIGHT);
 		g.fillRect(0, 0, 5, Game.HEIGHT);
 		
-		// right bar
+		// right edge
 		g.setColor(Color.white);
 		g.drawRect(Game.WIDTH-5, 0, 5, Game.HEIGHT);
 		g.fillRect(Game.WIDTH-5, 0, 5, Game.HEIGHT);
 		
-		
-		// left footer bar detail
-		g.setColor(Color.cyan);
+		// left edge paddle detail
+		g.setColor(Color.blue);
 		g.drawRect(0, Game.HEIGHT - 81, 6, 15);
 		g.fillRect(0, Game.HEIGHT - 81, 6, 15);
 		
-		// right footer bar detail
-		g.setColor(Color.cyan);
+		// right edge paddle detail
+		g.setColor(Color.blue);
 		g.drawRect(Game.WIDTH-5, Game.HEIGHT - 81, 6, 15);
 		g.fillRect(Game.WIDTH-5, Game.HEIGHT - 81, 6, 15);
 		
-		// Lives/number of balls
 		g.setColor(Color.white);
-		g.drawString(Integer.toString(LIVES), 25, 15);
+		
+		// Lives/number of balls
+		g.drawString(Integer.toString(LIVES), Game.WIDTH - 150, 25);
 		
 		// Current Score
-		g.drawString(Integer.toString(SCORE), 25, 55);
+		g.drawString(Integer.toString(SCORE), 20, 25);
 		
 	}
 }

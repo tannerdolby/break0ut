@@ -5,13 +5,15 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+// Game Paddle
 public class Player extends GameObject {
 	
 	private Handler handler;
+	private int paddleWidth = 30;
+	private Color paddleColor = Color.blue;
 
 	public Player(int x, int y, ID id, String name, Handler handler) {
 		super(x, y, id, name);
-		
 		this.handler = handler;
 	}
 
@@ -19,7 +21,7 @@ public class Player extends GameObject {
 		x += velX;
 		y += velY;
 		
-		x = Game.clamp(x, 0, Game.WIDTH - 55);
+		x = Game.clamp(x, 5, Game.WIDTH - 30);
 		y = Game.clamp(y, 0, Game.HEIGHT - 36);
 		
 		collision();
@@ -28,14 +30,12 @@ public class Player extends GameObject {
 
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		
-//		g.setColor(Color.blue);
-		g.setColor(Color.cyan);
+
+		g.setColor(paddleColor);
+
 		g2d.draw(getBounds());
-		
-		g.setColor(Color.cyan);
-		g.fillRect(x, y, 48, 12);
-		
+
+		g.fillRect(x, y, this.paddleWidth, 12);
 	}
 	
 	/**
@@ -43,12 +43,12 @@ public class Player extends GameObject {
 	 * @return
 	 */
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, 48, 12);
+		return new Rectangle(x, y, this.paddleWidth, 12);
 	}
 	
 	
 	/**
-	 * Detect collision between Player and Ball GameObjects.
+	 * Detect collision between Player/Paddle and Ball GameObjects.
 	 */
 	public void collision() {
 		
@@ -59,7 +59,7 @@ public class Player extends GameObject {
 				if (getBounds().intersects(temp.getBounds())) {
 					// play around with this "bounce" value when ball
 					// contacts the player board
-					temp.setVelocityY(-2);
+					temp.setVelocityY(-4);
 
 				}
 			}

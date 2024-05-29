@@ -32,8 +32,12 @@ public class Ball extends GameObject {
 		}
 		
 		if (y >= Game.HEIGHT) {
-			System.out.println("LOST A LIFE");
-			this.setVelocityY(0);
+			if (HUD.LIVES > 3) {
+				System.out.println("Game over :)");
+			}
+			HUD.LIVES += 1;
+			// TODO: Reserve ball
+			this.setY(150);
 		}
 
 		collision();
@@ -61,7 +65,7 @@ public class Ball extends GameObject {
 			if (Game.colorBlocks.containsKey(temp.id)) {
 				// check for collision between ball and color block
 				if (getBounds().intersects(temp.getBounds())) {
-					this.setVelocityY(2);
+					this.setVelocityY(4);
 					HUD.SCORE += Game.colorBlocks.get(temp.id);
 					this.handler.removeObject(temp);
 				}

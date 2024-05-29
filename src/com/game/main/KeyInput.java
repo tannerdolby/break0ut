@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 public class KeyInput extends KeyAdapter {
 	
 	private Handler handler;
+	private int currPlayerMovementKey;
 	
 	public KeyInput(Handler handler) {
 		this.handler = handler;
@@ -18,12 +19,20 @@ public class KeyInput extends KeyAdapter {
 			GameObject temp = this.handler.objects.get(i);
 			
 			if (temp.id == ID.Player) {
-				if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) temp.setVelocityX(-5);
-				if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) temp.setVelocityX(5);
+				this.currPlayerMovementKey = key;
+				
+				if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
+					temp.setVelocityX(-5);
+				}
+				if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
+					temp.setVelocityX(5);
+				}
 			}
 		}
 		
-		if (key == KeyEvent.VK_ESCAPE) System.exit(1);
+		if (key == KeyEvent.VK_ESCAPE) {
+			System.exit(1);
+		}
 	}
 	
 	public void keyReleased(KeyEvent e) {
@@ -33,8 +42,15 @@ public class KeyInput extends KeyAdapter {
 			GameObject temp = this.handler.objects.get(i);
 			
 			if (temp.id == ID.Player) {
-				if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) temp.setVelocityX(0);
-				if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) temp.setVelocityX(0);
+				if (key != this.currPlayerMovementKey) {
+					return;
+				}
+				if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) {
+					temp.setVelocityX(0);
+				}
+				if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
+					temp.setVelocityX(0);
+				}
 			}
 		}
 	}
