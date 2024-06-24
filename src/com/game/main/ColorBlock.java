@@ -7,30 +7,42 @@ import java.awt.Rectangle;
 public class ColorBlock extends GameObject {
 	
 	private Handler handler;
+	private int width = 30;
+	private int height = 5;
 	
 	public static int GAP = 35;
 	
 	public ColorBlock(int x, int y, ID id, String name, Handler handler) {
 		super(x, y, id, name);
-
 		this.handler = handler;
 	}
 
 	public void tick() {}
 	
 	public void render(Graphics g) {
-		if (id == ID.GreenBlock) g.setColor(Color.green);
-		if (id == ID.YellowBlock) g.setColor(Color.yellow);
-		if (id == ID.OrangeBlock) g.setColor(Color.orange);
-		if (id == ID.RedBlock) g.setColor(Color.red);
+		switch (id) {
+			case GreenBlock:
+				g.setColor(Color.green);
+				break;
+			case YellowBlock:
+				g.setColor(Color.yellow);
+				break;
+			case OrangeBlock:
+				g.setColor(Color.orange);
+				break;
+			case RedBlock:
+				g.setColor(Color.red);
+				break;
+			default:
+				break;
+		}
 		
-		g.drawRect(x, y, 30, 5);
-		g.fillRect(x, y, 30, 5);
-
+		g.drawRect(x, y, width, height);
+		g.fillRect(x, y, width, height);
 	}
 	
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, 30, 5);
+		return new Rectangle(x, y, width, height);
 	}
 	
 	public void collision() {}

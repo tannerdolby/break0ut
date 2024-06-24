@@ -4,15 +4,17 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+// TODO: Serve ball on enter after loading screen
+
 public class Ball extends GameObject {
 	
 	private Handler handler;
+	public static boolean visible = true;
 	
 	public Ball(int x, int y, ID id, String name, Handler handler) {
 		super(x, y, id, name);
 		
 		this.handler = handler;
-		
 		velX = 2;
 		velY = 2;
 	}
@@ -22,22 +24,39 @@ public class Ball extends GameObject {
 		y += velY;
 		
 		// bounds check to keep ball bouncing off side walls
-		if (x <= 0 || x >= Game.WIDTH - 15) velX *= -1;
+		if (x <= 0 || x >= Game.WIDTH - 15) {
+			velX *= -1;
+		}
 		
-		// TODO: If player misses and ball goes through the floor, reduce a player life
-		// also if player gets a breakout and ball goes through ceiling handle win condition
+		if (!Ball.visible) {
+			velX = 0;
+			velY = 0;
+			this.handler.removeObject(this);
+		} else {
+//			x = 200;
+//			y = 500;
+			
+		}
+		
+		// TODO: If player misses and ball goes through the floor, increment times "caught" breaking out
+		// and if player gets a breakout e.g. ball goes through ceiling handle win condition
 		if (y <= 0) {
+			// TODO: Handle breakout condition
 			System.out.println("BREAKOUT");
+			this.setVelocityX(0);
 			this.setVelocityY(0);
 		}
 		
 		if (y >= Game.HEIGHT) {
+			System.out.println("Lives: " + Integer.toString(HUD.LIVES));
 			if (HUD.LIVES > 3) {
 				System.out.println("Game over :)");
 			}
 			HUD.LIVES += 1;
-			// TODO: Reserve ball
+			HUD.SHOW_SERVE_BTN = true;
 			this.setY(150);
+			this.setVelocityX(0);
+			this.setVelocityY(0);
 		}
 
 		collision();
@@ -65,9 +84,11 @@ public class Ball extends GameObject {
 			if (Game.colorBlocks.containsKey(temp.id)) {
 				// check for collision between ball and color block
 				if (getBounds().intersects(temp.getBounds())) {
-					this.setVelocityY(4);
-					HUD.SCORE += Game.colorBlocks.get(temp.id);
-					this.handler.removeObject(temp);
+					this.setVelocityY(-1 * this.getVelocityY());
+					if (!Game.isStartingScreen) {
+						HUD.SCORE += Game.colorBlocks.get(temp.id);
+						this.handler.removeObject(temp);
+					}
 				}
 			}
 		}

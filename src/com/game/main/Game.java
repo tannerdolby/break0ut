@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferStrategy;
 import java.util.HashMap;
 import java.util.Random;
@@ -17,9 +18,14 @@ public class Game extends Canvas implements Runnable {
 	private Thread thread;
 	private boolean isRunning;
 	private Handler handler;
+	public static boolean isStartingScreen = true;
+	public static boolean isPlaying = false;
 	private HUD hud;
 	private Random r;
-	private int coloredBlockOrigin = 0;
+	
+	public static void main(String[] args) {
+		new Game();
+	}
 	
 	public Game() {
 		handler = new Handler();
@@ -28,30 +34,25 @@ public class Game extends Canvas implements Runnable {
 		
 		this.addKeyListener(new KeyInput(handler));
 		
-		new Window(WIDTH, HEIGHT, "Break0ut", this);
+		new Window(WIDTH, HEIGHT, "Breakout", this);
 		
 		colorBlocks.put(ID.YellowBlock, 1);
 		colorBlocks.put(ID.GreenBlock, 3);
 		colorBlocks.put(ID.OrangeBlock, 5);
 		colorBlocks.put(ID.RedBlock, 7);
 		
-		handler.addObject(new Player(WIDTH/2-64, HEIGHT - 80, ID.Player, "player1", handler));
-		handler.addObject(new Ball(WIDTH/2-64, 150, ID.Ball, "gameball", handler));
+		// TODO: Loading Screen
+		// Player paddle is 100% width and the ball is bouncing in the playable area
+		// but not breaking any blocks
+		// Enter will start the match and serve the first ball
+		handler.addObject(new Player(0, HEIGHT - 110, WIDTH, 10, ID.Player, "player1", handler));
+		handler.addObject(new Ball(WIDTH/2-200, 150, ID.Ball, "gameball", handler));
 		
-		// TODO: this needs some fine tuning for more snug placement
-		// Create the colored blocks consisting of 8 rows, each with 14 blocks (4 colors with 2 rows each)
-		for (int i=0; i < 14; i++) {
-			coloredBlockOrigin = ColorBlock.GAP * i;
-			handler.addObject(new ColorBlock(coloredBlockOrigin, 70, ID.RedBlock, "red-" + i, handler));
-			handler.addObject(new ColorBlock(coloredBlockOrigin, 80, ID.RedBlock, "red-" + i, handler));
-			handler.addObject(new ColorBlock(coloredBlockOrigin, 90, ID.OrangeBlock, "orange-" + i, handler));
-			handler.addObject(new ColorBlock(coloredBlockOrigin, 100, ID.OrangeBlock, "orange-" + i, handler));
-			handler.addObject(new ColorBlock(coloredBlockOrigin, 110, ID.GreenBlock, "yellow-" + i, handler));
-			handler.addObject(new ColorBlock(coloredBlockOrigin, 120, ID.GreenBlock, "yellow-" + i, handler));
-			handler.addObject(new ColorBlock(coloredBlockOrigin, 130, ID.YellowBlock, "green-" + i, handler));
-			handler.addObject(new ColorBlock(coloredBlockOrigin, 140, ID.YellowBlock, "green-" + i, handler));
-		}
+		int maxPossibleScore = ((1*14)*2) + ((3*14)*2) + ((5*14)*2) + ((7*14)*2);
+//		System.out.println("MAX POSSIBLE SCORE: " + Integer.toString(maxPossibleScore));
 		
+		// Create the colored block game objects consisting of 8 rows, each with 14 blocks (4 colors with 2 rows each)
+		this.renderColorBlocks(handler);
 	}
 
 	public synchronized void start() {
@@ -140,7 +141,22 @@ public class Game extends Canvas implements Runnable {
 		
 		// use buffer strategy to make the next available buffer visible
 		bs.show();
+	}
+	
+	public void renderColorBlocks(Handler handler) {
+		int x = 0;
 		
+		for (int i=0; i < 14; i++) {
+			x = ColorBlock.GAP * i;
+			handler.addObject(new ColorBlock(x, 65, ID.RedBlock, "red-" + i, handler));
+			handler.addObject(new ColorBlock(x, 74, ID.RedBlock, "red-" + i, handler));
+			handler.addObject(new ColorBlock(x, 83, ID.OrangeBlock, "orange-" + i, handler));
+			handler.addObject(new ColorBlock(x, 92, ID.OrangeBlock, "orange-" + i, handler));
+			handler.addObject(new ColorBlock(x, 101, ID.GreenBlock, "green-" + i, handler));
+			handler.addObject(new ColorBlock(x, 110, ID.GreenBlock, "green-" + i, handler));
+			handler.addObject(new ColorBlock(x, 119, ID.YellowBlock, "yellow-" + i, handler));
+			handler.addObject(new ColorBlock(x, 128, ID.YellowBlock, "yellow-" + i, handler));
+		}
 	}
 	
 	public static int clamp(int v, int min, int max) {
@@ -151,9 +167,5 @@ public class Game extends Canvas implements Runnable {
 		} else {
 			return v;
 		}
-	}
-	
-	public static void main(String[] args) {
-		new Game();
 	}
 }
