@@ -1,7 +1,7 @@
-# Break0ut
+# Breakout
 Remake of the 1970s arcade game Breakout.
 
-![demo](https://user-images.githubusercontent.com/48612525/183361527-e651175b-c6db-4df9-93d3-76125bfc4da4.png)
+![gameplay demo](https://github.com/tannerdolby/break0ut/assets/48612525/8d62ba21-adb4-44ae-954d-2e3a50e34911)
 
 ## Kudos
 - [Coin-Op] Arcade Video Game Breakout © 1976 Atari, Incorporated.
